@@ -65,7 +65,7 @@ defmodule Brainfuck do
 
   defp print_char(state) do
     current_data = get_in(state, [:data, state.data_ptr])
-    IO.puts <<current_data>>
+    IO.write <<current_data>>
     state
   end
 
