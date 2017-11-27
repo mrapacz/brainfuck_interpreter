@@ -1,4 +1,4 @@
-# brainfuck_interpreter
+# Brainfuck
 A simple brainfuck interpreter written in Elixir
 
 # Running
