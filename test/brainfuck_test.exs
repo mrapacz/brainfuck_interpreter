@@ -2,7 +2,9 @@ defmodule BrainfuckTest do
   use ExUnit.Case
   doctest Brainfuck
 
-  test "the truth" do
-    assert 1 + 1 == 2
+  test "Interpret working correctly" do
+    assert Brainfuck.interpret(
+             "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>."
+           ) == "Hello World!\n"
   end
 end

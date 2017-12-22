@@ -1,5 +1,12 @@
 defmodule Brainfuck do
-  @doc "Interprets brainfuck code assuming it is syntactically and semantically correct"
+  @moduledoc """
+  A module allowing one to interpret brainfuck code.
+  """
+
+  @doc """
+  Interprets brainfuck code assuming it is syntactically and semantically correct
+
+  """
   def interpret(code) when is_binary(code) do
     interpret(%{
       code_length: String.length(code),
@@ -7,12 +14,14 @@ defmodule Brainfuck do
       code_ptr: 0,
       data: %{},
       data_ptr: 0,
-      brackets: match_brackets(code)
+      brackets: match_brackets(code),
+      result: ""
     })
   end
 
-  def interpret(%{code_ptr: code_ptr, code_length: code_length}) when code_ptr == code_length,
-    do: :ok
+  def interpret(%{code_ptr: code_ptr, code_length: code_length, result: result})
+      when code_ptr == code_length,
+      do: result
 
   def interpret(state) when is_map(state) do
     state
@@ -91,8 +100,7 @@ defmodule Brainfuck do
   @doc "Prints a character whose ASCII value corresponds to the one in the current data cell"
   def print_char(state) do
     current_data = get_in(state, [:data, state.data_ptr])
-    IO.write(<<current_data>>)
-    state
+    Map.update!(state, :result, fn result -> result <> <<current_data>> end)
   end
 
   @doc "Increments the value stored in the current data cell"
@@ -142,9 +150,10 @@ defmodule Brainfuck do
     end
   end
 
-  @doc "Reads brainfuck code from the input and interprets it"
   def read do
-    code = IO.gets("Input brainfuck code\n") |> String.trim()
-    interpret(code)
+    IO.gets("Input brainfuck code\n")
+    |> String.trim()
+    |> interpret()
+    |> IO.puts()
   end
 end
